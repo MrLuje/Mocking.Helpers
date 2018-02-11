@@ -1,0 +1,65 @@
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Completion;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Mocking.Helpers.Moq
+{
+    [ExportCompletionProvider(nameof(MoqIsAnyCompletion), LanguageNames.CSharp)]
+    public class MoqIsAnyCompletion : CompletionProvider
+    {
+        private MoqProvider _provider;
+
+        public MoqIsAnyCompletion()
+        {
+            this._provider = new MoqProvider();
+        }
+
+        internal bool IsMoqSetupMethod(InvocationExpressionSyntax invocation)
+        {
+            return SyntaxHelpers.IsMethodNamed(invocation, this._provider.MockingMethodName);
+        }
+
+        public override async Task ProvideCompletionsAsync(CompletionContext context)
+        {
+            try
+            {
+                if (!context.Document.SupportsSemanticModel || !context.Document.SupportsSyntaxTree) return;
+
+                var hasMoqReferenced = context.Document.Project.MetadataReferences.Any(r => r.Display.Contains(this._provider.AssemblyName));
+                if (!hasMoqReferenced) return;
+
+                var syntaxRoot = await context.Document.GetSyntaxRootAsync();
+                var token = SyntaxHelpers.GetSelectedTokens(syntaxRoot, context.Position);
+
+                // ?ot in an opened method
+                if (token.Parent == null) return;
+
+                var mockedMethodArgumentList = token.Parent as ArgumentListSyntax;
+                var setupMethodInvocation = mockedMethodArgumentList.Ancestors()
+                                                                    .OfType<InvocationExpressionSyntax>()
+                                                                    .Where(IsMoqSetupMethod)
+                                                                    .FirstOrDefault();
+
+                if (setupMethodInvocation == null) return;
+
+                var semanticModel = await context.Document.GetSemanticModelAsync();
+                var matchingMockedMethods = SyntaxHelpers.GetCandidatesMockedMethodSignatures(semanticModel, setupMethodInvocation);
+
+                var completionService = new CompletionService(context, token, semanticModel, this._provider);
+
+                foreach (IMethodSymbol matchingMockedMethodSymbol in matchingMockedMethods)
+                {
+                    completionService.AddSuggestionsForMethod(matchingMockedMethodSymbol, mockedMethodArgumentList);
+                }
+            }
+            catch
+            {
+            }
+        }
+    }
+}
