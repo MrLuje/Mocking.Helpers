@@ -4,6 +4,9 @@
         <Identity Id="Mocking.Helpers..9e3b8d25-be45-4b82-9e8d-eeceadcc1af3" Version="1.0.0.0" Language="en-US" Publisher="MrLuje"/>
         <DisplayName>Mocking.Helpers</DisplayName>
         <Description xml:space="preserve">Collection of features to help working with various mocking framework</Description>
+        <MoreInfo>https://github.com/MrLuje/Mocking.Helpers</MoreInfo>
+        <PreviewImage>Resources\moq.png</PreviewImage>
+        <Tags>mocking roslyn moq</Tags>
     </Metadata>
     <Installation>
         <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[15.0,16.0)" />
