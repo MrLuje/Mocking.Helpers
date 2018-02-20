@@ -57,14 +57,14 @@ namespace Mocking.Helpers
         /// Get all signature candidates which have parameters in a lambda call
         /// </summary>
         /// <param name="semanticModel"></param>
-        /// <param name="methodToMockInLambda"></param>
+        /// <param name="methodToMock"></param>
         /// <returns></returns>
-        static internal IEnumerable<IMethodSymbol> GetCandidatesMockedMethodSignatures(SemanticModel semanticModel, InvocationExpressionSyntax methodToMockInLambda)
+        static internal IEnumerable<IMethodSymbol> GetCandidatesMockedMethodSignatures(SemanticModel semanticModel, InvocationExpressionSyntax methodToMock)
         {
-            if (methodToMockInLambda == null) return Enumerable.Empty<IMethodSymbol>();
+            if (methodToMock == null) return Enumerable.Empty<IMethodSymbol>();
 
             var mockSignatures = new List<IMethodSymbol>();
-            var symbolInfo = semanticModel.GetSymbolInfo(methodToMockInLambda);
+            var symbolInfo = semanticModel.GetSymbolInfo(methodToMock);
 
             // not what are searching but still a method
             if (symbolInfo.CandidateReason == CandidateReason.None && symbolInfo.Symbol is IMethodSymbol methodSymbol)
@@ -75,7 +75,7 @@ namespace Mocking.Helpers
             {
                 mockSignatures.AddRange(symbolInfo.CandidateSymbols.OfType<IMethodSymbol>());
             }
-            return mockSignatures.Where(m => m.Parameters.Any());
+            return mockSignatures.Where(m => !m.IsStatic && m.Parameters.Any());
         }
     }
 }
