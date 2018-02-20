@@ -2,6 +2,7 @@
 using Microsoft.CodeAnalysis.Completion;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Mocking.Helpers.Interfaces;
 using Mocking.Helpers.Moq;
 using System;
 using System.Linq;
@@ -15,9 +16,9 @@ namespace Mocking.Helpers
         private CompletionItemRules _defaultCompletions;
         private readonly SyntaxToken _token;
         private readonly SemanticModel _semanticModel;
-        private readonly MoqProvider _provider;
+        private readonly BaseMockingProvider _provider;
 
-        public CompletionService(CompletionContext context, SyntaxToken token, SemanticModel semanticModel, MoqProvider provider)
+        public CompletionService(CompletionContext context, SyntaxToken token, SemanticModel semanticModel, BaseMockingProvider provider)
         {
             _context = context;
             _token = token;

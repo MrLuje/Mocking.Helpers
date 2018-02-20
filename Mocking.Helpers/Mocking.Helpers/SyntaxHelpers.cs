@@ -40,16 +40,27 @@ namespace Mocking.Helpers
         }
 
         /// <summary>
-        /// Get all signature candidates which have parameters
+        /// Get all signature candidates which have parameters in a lambda call
         /// </summary>
         /// <param name="semanticModel"></param>
         /// <param name="setupMethodInvocation"></param>
         /// <returns></returns>
-        static internal IEnumerable<IMethodSymbol> GetCandidatesMockedMethodSignatures(SemanticModel semanticModel, InvocationExpressionSyntax setupMethodInvocation)
+        static internal IEnumerable<IMethodSymbol> GetCandidatesMockedMethodSignaturesForLambda(SemanticModel semanticModel, InvocationExpressionSyntax setupMethodInvocation)
         {
             var setupLambda = setupMethodInvocation.ArgumentList.Arguments.FirstOrDefault()?.Expression as LambdaExpressionSyntax;
 
             var methodToMockInLambda = setupLambda?.Body as InvocationExpressionSyntax;
+            return GetCandidatesMockedMethodSignatures(semanticModel, methodToMockInLambda);
+        }
+
+        /// <summary>
+        /// Get all signature candidates which have parameters in a lambda call
+        /// </summary>
+        /// <param name="semanticModel"></param>
+        /// <param name="methodToMockInLambda"></param>
+        /// <returns></returns>
+        static internal IEnumerable<IMethodSymbol> GetCandidatesMockedMethodSignatures(SemanticModel semanticModel, InvocationExpressionSyntax methodToMockInLambda)
+        {
             if (methodToMockInLambda == null) return Enumerable.Empty<IMethodSymbol>();
 
             var mockSignatures = new List<IMethodSymbol>();

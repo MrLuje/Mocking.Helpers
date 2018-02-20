@@ -1,25 +1,25 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Completion;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
-namespace Mocking.Helpers.Moq
+namespace Mocking.Helpers.NSubstitute
 {
-    [ExportCompletionProvider(nameof(MoqIsAnyCompletion), LanguageNames.CSharp)]
-    public class MoqIsAnyCompletion : CompletionProvider
+    [ExportCompletionProvider(nameof(NSubstituteArgAnyCompletion), LanguageNames.CSharp)]
+    public class NSubstituteArgAnyCompletion : CompletionProvider
     {
-        private MoqProvider _provider;
+        private NSubstituteProvider _provider;
 
-        public MoqIsAnyCompletion()
+        public NSubstituteArgAnyCompletion()
         {
-            this._provider = new MoqProvider();
+            this._provider = new NSubstituteProvider();
         }
 
-        internal bool IsMoqSetupMethod(InvocationExpressionSyntax invocation)
+        internal bool IsSubstituteForMethod(InvocationExpressionSyntax invocation)
         {
             return SyntaxHelpers.IsMethodNamed(invocation, this._provider.MockingMethodName);
         }
@@ -30,8 +30,8 @@ namespace Mocking.Helpers.Moq
             {
                 if (!context.Document.SupportsSemanticModel || !context.Document.SupportsSyntaxTree) return;
 
-                var hasMoqReferenced = context.Document.Project.MetadataReferences.Any(r => r.Display.Contains(this._provider.AssemblyName));
-                if (!hasMoqReferenced) return;
+                var hasNSubstituteReferenced = context.Document.Project.MetadataReferences.Any(r => r.Display.Contains(this._provider.AssemblyName));
+                if (!hasNSubstituteReferenced) return;
 
                 var syntaxRoot = await context.Document.GetSyntaxRootAsync();
                 var token = SyntaxHelpers.GetSelectedTokens(syntaxRoot, context.Position);
@@ -40,15 +40,14 @@ namespace Mocking.Helpers.Moq
                 if (token.Parent == null) return;
 
                 var mockedMethodArgumentList = token.Parent as ArgumentListSyntax;
-                var setupMethodInvocation = mockedMethodArgumentList.Ancestors()
-                                                                    .OfType<InvocationExpressionSyntax>()
-                                                                    .Where(IsMoqSetupMethod)
-                                                                    .FirstOrDefault();
+                var mockedMethodInvocation = mockedMethodArgumentList.Ancestors()
+                                                                     .OfType<InvocationExpressionSyntax>()
+                                                                     .FirstOrDefault();
 
-                if (setupMethodInvocation == null) return;
+                if (mockedMethodInvocation == null) return;
 
                 var semanticModel = await context.Document.GetSemanticModelAsync();
-                var matchingMockedMethods = SyntaxHelpers.GetCandidatesMockedMethodSignaturesForLambda(semanticModel, setupMethodInvocation);
+                var matchingMockedMethods = SyntaxHelpers.GetCandidatesMockedMethodSignatures(semanticModel, mockedMethodInvocation);
 
                 var completionService = new CompletionService(context, token, semanticModel, this._provider);
 
@@ -63,3 +62,4 @@ namespace Mocking.Helpers.Moq
         }
     }
 }
+
