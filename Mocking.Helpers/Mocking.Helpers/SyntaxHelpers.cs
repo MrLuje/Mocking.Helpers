@@ -66,7 +66,7 @@ namespace Mocking.Helpers
             var mockSignatures = new List<IMethodSymbol>();
             var symbolInfo = semanticModel.GetSymbolInfo(methodToMock);
 
-            // not what are searching but still a method
+            // not what we are searching but still a method
             if (symbolInfo.CandidateReason == CandidateReason.None && symbolInfo.Symbol is IMethodSymbol methodSymbol)
             {
                 mockSignatures.Add(methodSymbol);
