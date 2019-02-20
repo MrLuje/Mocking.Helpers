@@ -9,21 +9,6 @@
     </FileUpgradeFlags>
     <OldToolsVersion>14.0</OldToolsVersion>
     <UpgradeBackupLocation />
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -32,7 +17,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectTypeGuids>{82b43b9b-a64c-4715-b499-d71e9ca2bd60};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <ProjectGuid>{BB53B565-6B97-4B6E-806A-DD072023AE6F}</ProjectGuid>
+    <ProjectGuid>{E3443318-755F-4527-AC60-09704F478D85}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Mocking.Helpers.Vsix</RootNamespace>
@@ -75,24 +60,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Mocking.Helpers\Mocking.Helpers.csproj">
-      <Project>{49B470A9-EFE4-4470-A1B3-154947BC7453}</Project>
-      <Name>Mocking.Helpers</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
-      <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4.6.1 %28x86 and x64%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Resources\mocking-helpers.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
@@ -101,9 +68,72 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="Resources\nsubstitute.png" />
+    <Content Include="Resources\nsubstitute.png">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Mocking.Helpers\Mocking.Helpers\Mocking.Helpers.csproj">
+      <Project>{49b470a9-efe4-4470-a1b3-154947bc7453}</Project>
+      <Name>Mocking.Helpers</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\..\packages\Microsoft.VSSDK.BuildTools\tools\vssdk\Microsoft.VsSDK.targets" Condition="Exists('..\..\packages\Microsoft.VSSDK.BuildTools\tools\vssdk\Microsoft.VsSDK.targets')" Label="Paket" />
+  <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="..\..\packages\Microsoft.VisualStudio.SDK.Analyzers\build\Microsoft.VisualStudio.SDK.Analyzers.targets" Condition="Exists('..\..\packages\Microsoft.VisualStudio.SDK.Analyzers\build\Microsoft.VisualStudio.SDK.Analyzers.targets')" Label="Paket" />
+  <ItemGroup>
+    <Analyzer Include="..\..\packages\Microsoft.VisualStudio.SDK.Analyzers\analyzers\cs\Microsoft.VisualStudio.SDK.Analyzers.dll">
+      <Paket>True</Paket>
+    </Analyzer>
+  </ItemGroup>
+  <Import Project="..\..\packages\Microsoft.VisualStudio.Threading.Analyzers\build\Microsoft.VisualStudio.Threading.Analyzers.targets" Condition="Exists('..\..\packages\Microsoft.VisualStudio.Threading.Analyzers\build\Microsoft.VisualStudio.Threading.Analyzers.targets')" Label="Paket" />
+  <ItemGroup>
+    <Analyzer Include="..\..\packages\Microsoft.VisualStudio.Threading.Analyzers\analyzers\cs\Microsoft.VisualStudio.Threading.Analyzers.CodeFixes.dll">
+      <Paket>True</Paket>
+    </Analyzer>
+    <Analyzer Include="..\..\packages\Microsoft.VisualStudio.Threading.Analyzers\analyzers\cs\Microsoft.VisualStudio.Threading.Analyzers.dll">
+      <Paket>True</Paket>
+    </Analyzer>
+    <Analyzer Include="..\..\packages\Microsoft.VisualStudio.Threading.Analyzers\analyzers\cs\cs\Microsoft.VisualStudio.Threading.Analyzers.resources.dll">
+      <Paket>True</Paket>
+    </Analyzer>
+    <Analyzer Include="..\..\packages\Microsoft.VisualStudio.Threading.Analyzers\analyzers\cs\de\Microsoft.VisualStudio.Threading.Analyzers.resources.dll">
+      <Paket>True</Paket>
+    </Analyzer>
+    <Analyzer Include="..\..\packages\Microsoft.VisualStudio.Threading.Analyzers\analyzers\cs\es\Microsoft.VisualStudio.Threading.Analyzers.resources.dll">
+      <Paket>True</Paket>
+    </Analyzer>
+    <Analyzer Include="..\..\packages\Microsoft.VisualStudio.Threading.Analyzers\analyzers\cs\fr\Microsoft.VisualStudio.Threading.Analyzers.resources.dll">
+      <Paket>True</Paket>
+    </Analyzer>
+    <Analyzer Include="..\..\packages\Microsoft.VisualStudio.Threading.Analyzers\analyzers\cs\it\Microsoft.VisualStudio.Threading.Analyzers.resources.dll">
+      <Paket>True</Paket>
+    </Analyzer>
+    <Analyzer Include="..\..\packages\Microsoft.VisualStudio.Threading.Analyzers\analyzers\cs\ja\Microsoft.VisualStudio.Threading.Analyzers.resources.dll">
+      <Paket>True</Paket>
+    </Analyzer>
+    <Analyzer Include="..\..\packages\Microsoft.VisualStudio.Threading.Analyzers\analyzers\cs\ko\Microsoft.VisualStudio.Threading.Analyzers.resources.dll">
+      <Paket>True</Paket>
+    </Analyzer>
+    <Analyzer Include="..\..\packages\Microsoft.VisualStudio.Threading.Analyzers\analyzers\cs\pl\Microsoft.VisualStudio.Threading.Analyzers.resources.dll">
+      <Paket>True</Paket>
+    </Analyzer>
+    <Analyzer Include="..\..\packages\Microsoft.VisualStudio.Threading.Analyzers\analyzers\cs\pt-BR\Microsoft.VisualStudio.Threading.Analyzers.resources.dll">
+      <Paket>True</Paket>
+    </Analyzer>
+    <Analyzer Include="..\..\packages\Microsoft.VisualStudio.Threading.Analyzers\analyzers\cs\ru\Microsoft.VisualStudio.Threading.Analyzers.resources.dll">
+      <Paket>True</Paket>
+    </Analyzer>
+    <Analyzer Include="..\..\packages\Microsoft.VisualStudio.Threading.Analyzers\analyzers\cs\tr\Microsoft.VisualStudio.Threading.Analyzers.resources.dll">
+      <Paket>True</Paket>
+    </Analyzer>
+    <Analyzer Include="..\..\packages\Microsoft.VisualStudio.Threading.Analyzers\analyzers\cs\zh-Hans\Microsoft.VisualStudio.Threading.Analyzers.resources.dll">
+      <Paket>True</Paket>
+    </Analyzer>
+    <Analyzer Include="..\..\packages\Microsoft.VisualStudio.Threading.Analyzers\analyzers\cs\zh-Hant\Microsoft.VisualStudio.Threading.Analyzers.resources.dll">
+      <Paket>True</Paket>
+    </Analyzer>
+  </ItemGroup>
   <Import Project="..\..\packages\Microsoft.VSSDK.BuildTools\build\Microsoft.VSSDK.BuildTools.targets" Condition="Exists('..\..\packages\Microsoft.VSSDK.BuildTools\build\Microsoft.VSSDK.BuildTools.targets')" Label="Paket" />
 </Project>
