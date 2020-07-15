@@ -17,12 +17,10 @@ namespace Mocking.Helpers.NSubstitute
         public NSubstituteArgAnyCompletion()
         {
             this._provider = new NSubstituteProvider();
+            IsSubstituteForMethod = (InvocationExpressionSyntax invocation) => this._provider.MockingMethodNames.Any(methodName => SyntaxHelpers.IsMethodNamed(invocation, methodName));
         }
 
-        internal bool IsSubstituteForMethod(InvocationExpressionSyntax invocation)
-        {
-            return SyntaxHelpers.IsMethodNamed(invocation, this._provider.MockingMethodName);
-        }
+        internal readonly Func<InvocationExpressionSyntax, bool> IsSubstituteForMethod;
 
         public override async Task ProvideCompletionsAsync(CompletionContext context)
         {
@@ -42,6 +40,7 @@ namespace Mocking.Helpers.NSubstitute
                 var mockedMethodArgumentList = token.Parent as ArgumentListSyntax;
                 var mockedMethodInvocation = mockedMethodArgumentList.Ancestors()
                                                                      .OfType<InvocationExpressionSyntax>()
+                                                                     .Where(IsSubstituteForMethod)
                                                                      .FirstOrDefault();
 
                 if (mockedMethodInvocation == null) return;

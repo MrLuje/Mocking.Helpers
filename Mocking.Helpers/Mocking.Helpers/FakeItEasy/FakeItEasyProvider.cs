@@ -1,16 +1,10 @@
-﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Mocking.Helpers.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Mocking.Helpers.Interfaces;
 
 namespace Mocking.Helpers.FakeItEasy
 {
     public class FakeItEasyProvider : BaseMockingProvider
     {
-        public override string MockingMethodName => "CallTo";
+        public override string[] MockingMethodNames { get; } = new[] { "CallTo" };
         public override string AssemblyName => "FakeItEasy";
         public override string MockingWildcardMethod => "A<{0}>._";
     }

@@ -14,13 +14,11 @@ namespace Mocking.Helpers
         {
             var method = invocation.Expression as MemberAccessExpressionSyntax;
             var methodName = method?.Name.Identifier.ValueText;
-            return methodName == expectedMethodName;
+            return string.Equals(methodName, expectedMethodName, StringComparison.Ordinal);
         }
 
-        static internal bool IsCommaOrOpenParenthesis(SyntaxToken token)
-        {
-            return token.IsKind(SyntaxKind.OpenParenToken) || token.IsKind(SyntaxKind.CommaToken);
-        }
+        internal static readonly Func<SyntaxToken, bool> IsCommaOrOpenParenthesis =
+            (SyntaxToken token) => token.IsKind(SyntaxKind.OpenParenToken) || token.IsKind(SyntaxKind.CommaToken);
 
         /// <summary>
         /// Get token at current position
@@ -75,7 +73,7 @@ namespace Mocking.Helpers
             {
                 mockSignatures.AddRange(symbolInfo.CandidateSymbols.OfType<IMethodSymbol>());
             }
-            return mockSignatures.Where(m => !m.IsStatic && m.Parameters.Any());
+            return mockSignatures.Where(m => !m.IsStatic && m.Parameters.Length > 0);
         }
     }
 }

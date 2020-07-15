@@ -1,16 +1,11 @@
-﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Mocking.Helpers.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Mocking.Helpers.Interfaces;
 
 namespace Mocking.Helpers.NSubstitute
 {
     public class NSubstituteProvider : BaseMockingProvider
     {
         public override string AssemblyName => "NSubstitute";
-        public override string MockingMethodName => "For";
+        public override string[] MockingMethodNames { get; } = new[] { "For" };
         public override string MockingWildcardMethod => "Arg.Any<{0}>()";
     }
 }
