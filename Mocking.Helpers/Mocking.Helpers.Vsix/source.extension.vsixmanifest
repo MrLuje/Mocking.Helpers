@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Id="Mocking.Helpers.DC82BF19-0482-4D47-A1FF-7F4CBBAA44D4" Version="1.0.0.0" Language="en-US" Publisher="MrLuje"/>
+    <Identity Id="Mocking.Helpers.DC82BF19-0482-4D47-A1FF-7F4CBBAA44D4" Version="1.1.14.0" Language="en-US" Publisher="MrLuje"/>
     <DisplayName>Mocking.Helpers</DisplayName>
     <Description xml:space="preserve">Collection of features to help working with various mocking framework</Description>
     <MoreInfo>https://github.com/MrLuje/Mocking.Helpers</MoreInfo>
