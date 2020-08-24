@@ -2,9 +2,7 @@
 using Microsoft.CodeAnalysis.Completion;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Mocking.Helpers.NSubstitute
@@ -40,7 +38,6 @@ namespace Mocking.Helpers.NSubstitute
                 var mockedMethodArgumentList = token.Parent as ArgumentListSyntax;
                 var mockedMethodInvocation = mockedMethodArgumentList.Ancestors()
                                                                      .OfType<InvocationExpressionSyntax>()
-                                                                     .Where(IsSubstituteForMethod)
                                                                      .FirstOrDefault();
 
                 if (mockedMethodInvocation == null) return;
