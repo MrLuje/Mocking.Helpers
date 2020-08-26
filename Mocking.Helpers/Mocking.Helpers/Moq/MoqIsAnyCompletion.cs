@@ -1,9 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Completion;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,12 +15,10 @@ namespace Mocking.Helpers.Moq
         public MoqIsAnyCompletion()
         {
             this._provider = new MoqProvider();
+            IsMoqSetupMethod = (InvocationExpressionSyntax invocation) => this._provider.MockingMethodNames.Any(methodName => SyntaxHelpers.IsMethodNamed(invocation, methodName));
         }
 
-        internal bool IsMoqSetupMethod(InvocationExpressionSyntax invocation)
-        {
-            return SyntaxHelpers.IsMethodNamed(invocation, this._provider.MockingMethodName);
-        }
+        internal readonly Func<InvocationExpressionSyntax, bool> IsMoqSetupMethod;
 
         public override async Task ProvideCompletionsAsync(CompletionContext context)
         {

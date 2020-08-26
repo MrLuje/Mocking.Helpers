@@ -18,12 +18,11 @@ namespace Mocking.Helpers.FakeItEasy
         public FakeItEasyIgnoredCompletion()
         {
             this._provider = new FakeItEasyProvider();
+            IsFakeItEasyCallToMethod = (InvocationExpressionSyntax invocation) => this._provider.MockingMethodNames.Any(methodName => SyntaxHelpers.IsMethodNamed(invocation, methodName));
         }
 
-        internal bool IsFakeItEasyCallToMethod(InvocationExpressionSyntax invocation)
-        {
-            return SyntaxHelpers.IsMethodNamed(invocation, this._provider.MockingMethodName);
-        }
+        internal readonly Func<InvocationExpressionSyntax, bool> IsFakeItEasyCallToMethod;
+
 
         public override async Task ProvideCompletionsAsync(CompletionContext context)
         {

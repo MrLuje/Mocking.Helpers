@@ -2,9 +2,7 @@
 using Microsoft.CodeAnalysis.Completion;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Mocking.Helpers.NSubstitute
@@ -17,12 +15,10 @@ namespace Mocking.Helpers.NSubstitute
         public NSubstituteArgAnyCompletion()
         {
             this._provider = new NSubstituteProvider();
+            IsSubstituteForMethod = (InvocationExpressionSyntax invocation) => this._provider.MockingMethodNames.Any(methodName => SyntaxHelpers.IsMethodNamed(invocation, methodName));
         }
 
-        internal bool IsSubstituteForMethod(InvocationExpressionSyntax invocation)
-        {
-            return SyntaxHelpers.IsMethodNamed(invocation, this._provider.MockingMethodName);
-        }
+        internal readonly Func<InvocationExpressionSyntax, bool> IsSubstituteForMethod;
 
         public override async Task ProvideCompletionsAsync(CompletionContext context)
         {
